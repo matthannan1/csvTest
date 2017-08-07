@@ -1,35 +1,34 @@
 import csv
+import pandas as pd
+import numpy as np
 
-matches = {}
+# Create empty data list
+data = []
 
-with open('96185_Family_Finder_Matches.csv', 'rb') as f:
-    data = csv.reader(f)
-    # Read the column names from the first line of the file
-    fields = data.next()
-# what is it? It is a list
-    print type(fields)
+# Open the file
+with open('96185_Family_Finder_Matches.csv', 'rb') as infile:
+    readdata = csv.reader(infile)
+
+# Pump file contents into data list
+    for row in readdata:
+        data.append(row)
+
+# Read the column names from the first line of the file
+    Header = data[0]
 
 # Fix ID column header
-    if fields[11] == "ResultID2":
-        print "Fixed ID"
-        fields[11] = "ID"
-        print fields[11]
+    if Header[11] == "ResultID2":
+        Header[11] = Header[11].replace("ResultID2", "ID")
 
 # Fix Label column header
-    if fields[13] == "Name":
-        print "Fixed Label"
-        fields[13] = "Label"
-        print fields[13]     
+    if Header[13] == "Name":
+        Header[13] = Header[13].replace("Name", "Label")
 
-# Add Empty Segment item
-    fields[14] = Segments{}
-    
-    for row in data:
-        # zip together the field names and values
-        items = zip(fields, row)
-        item = {}
-        # Add value to dictionary
-        for (name, value) in items:
-            item[name] = value.strip()
+    #print len(Header)
 
-print items
+# Pop off first row (the headers)
+    data.pop(0)
+# Now we have Headers and data objects
+
+    print pd.DataFrame(data, columns=Header)
+
