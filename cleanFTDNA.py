@@ -1,15 +1,19 @@
 import csv
-import pandas as pd
-import numpy as np
+import sys
+import Tkinter
 import tkFileDialog
 import os
 
+## create a root Tk widget (so we can destroy it later)
+root = Tkinter.Tk()
 
 def makeNodes():
     # Cleanup Family Finder Matches file and create nodes.csv
     # GUI file picker
     print("Select Family Finder Matches file...")
-    filePath = tkFileDialog.askopenfilename()
+    # initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.jpg"),("all files","*.*"))
+    filePath = tkFileDialog.askopenfilename(initialdir = "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi",
+                                            title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
 
     # Create empty nodes list
     nodes = []
@@ -30,29 +34,33 @@ def makeNodes():
             nodeHeader[11] = nodeHeader[11].replace("ResultID2", "ID")
             print("Fixed ID Header")
         else:
-            print("ID Header OK")    
+            print("ID Header OK")
 
     # Fix Label column header
         if nodeHeader[13] == "Name":
             nodeHeader[13] = nodeHeader[13].replace("Name", "Label")
             print("Fixed Label Header")
         else:
-            print("Label Header OK")           
+            print("Label Header OK")
 
     # Pop off first row (the headers)
         nodes.pop(0)
     # Now we have Headers and nodes objects
 
+    # Figure out working directory
+    workPath = os.path.dirname(filePath)
+    nodeFile = str(workPath + '/nodes.csv')
+
     # If nodes.csv exists, delete it
-    if os.path.isfile('./nodes.csv'):
+    if os.path.isfile(nodeFile):
         try:
-            os.unlink('./nodes.csv')
+            os.unlink(nodeFile)
             print("Removed previous nodes.csv file.")
         except:
             none
 
     # Write the Header and nodes to file
-    with open('nodes.csv', 'wb+') as outfile:
+    with open(nodeFile, 'wb+') as outfile:
         writenodes = csv.writer(outfile)
         writenodes.writerow(nodeHeader)
         for row in nodes:
@@ -61,9 +69,10 @@ def makeNodes():
 
 def makeEdges():
     # Cleanup ICW file and create edges.csv
-    # GUI file picker 
+    # GUI file picker
     print("Select ICW file...")
-    filePath = tkFileDialog.askopenfilename()
+    filePath = tkFileDialog.askopenfilename(initialdir = "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi",
+                                            title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
 
     # Create empty edges list
     edges = []
@@ -84,7 +93,7 @@ def makeEdges():
             edgesHeader[5] = edgesHeader[5].replace("Profile KitID", "Source")
             print("Fixed Source Header")
         else:
-            print("Source Header OK")    
+            print("Source Header OK")
 
     # Fix Label column header
         if edgesHeader[6] == "Match KitID":
@@ -97,16 +106,20 @@ def makeEdges():
         edges.pop(0)
     # Now we have Headers and nodes objects
 
+    # Build edgeFile
+    workPath = os.path.dirname(filePath)
+    edgeFile = str(workPath + '/edges.csv')
+
     # If edges.csv exists, delete it
-    if os.path.isfile('./edges.csv'):
+    if os.path.isfile(edgeFile):
         try:
-            os.unlink('./edges.csv')
+            os.unlink(edgeFile)
             print("Removed previous edges.csv file.")
         except:
             none
 
     # Write the Header and nodes to file
-    with open('edges.csv', 'wb+') as outfile:
+    with open(edgeFile, 'wb+') as outfile:
         writeedges = csv.writer(outfile)
         writeedges.writerow([edgesHeader[5], edgesHeader[6]])
         for row in edges:
@@ -120,5 +133,3 @@ makeNodes()
 print("Great! Now let's prep the ICW data")
 makeEdges()
 print("OK. That should do it.")
-
-
