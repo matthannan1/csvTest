@@ -50,21 +50,26 @@ def makeNodes():
     # Figure out working directory
     workPath = os.path.dirname(filePath)
     nodeFile = str(workPath + '/nodes.csv')
-
+    print("DEBUG- ",nodeFile)
+    
     # If nodes.csv exists, delete it
     if os.path.isfile(nodeFile):
         try:
             os.unlink(nodeFile)
             print("Removed previous nodes.csv file.")
         except:
-            none
+            print("No previous nodes.csv file found.")
 
     # Write the Header and nodes to file
     with open(nodeFile, 'wb+') as outfile:
         writenodes = csv.writer(outfile)
-        writenodes.writerow(nodeHeader)
+        writenodes.writerow([nodeHeader[1], nodeHeader[2], nodeHeader[3], nodeHeader[4],
+                            nodeHeader[5], nodeHeader[6], nodeHeader[8], nodeHeader[9],
+                            nodeHeader[10], nodeHeader[11], nodeHeader[12],nodeHeader[13]])
         for row in nodes:
-            writenodes.writerow(row)
+            writenodes.writerow([row[1], row[2], row[3], row[4],
+                            row[5], row[6], row[8], row[9],
+                            row[10], row[11], row[12],row[11]])
     print("Created nodes.csv file")
 
 def makeEdges():
@@ -116,7 +121,7 @@ def makeEdges():
             os.unlink(edgeFile)
             print("Removed previous edges.csv file.")
         except:
-            none
+             print("No previous edges.csv file found.")
 
     # Write the Header and nodes to file
     with open(edgeFile, 'wb+') as outfile:
