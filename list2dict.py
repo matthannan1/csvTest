@@ -8,14 +8,13 @@ import os
 root = Tkinter.Tk()
 
 print "GUI file picker"
+initialDir = "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi"
 
-nodePath = tkFileDialog.askopenfilename(initialdir = 
-                                        "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi",
+nodePath = tkFileDialog.askopenfilename(initialdir = initialDir,
                                         title = "Select Match file",
                                         filetypes = (("csv files","*.csv"),("all files","*.*")))
 
-edgePath = tkFileDialog.askopenfilename(initialdir = 
-                                        "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi",
+edgePath = tkFileDialog.askopenfilename(initialdir = initialDir,
                                         title = "Select ICW file",
                                         filetypes = (("csv files","*.csv"),("all files","*.*")))
 
@@ -26,15 +25,14 @@ nodeDict = {}
 
 print "Open the files"
 with open(edgePath, 'rb') as edgeFile:
-    edge = csv.reader(edgeFile)
-    edgeData = list(edge)
+    edgeReader = csv.reader(edgeFile)
+    edgeData = list(edgeReader)
 
 with open(nodePath, 'rb') as nodeFile:
-    node = csv.reader(nodeFile)
-    
+    nodeReader = csv.reader(nodeFile)
 
     print "Pump file contents into nodes list"
-    for row in node:
+    for row in nodeReader:
         nodeData.append(row)
         nodeID = row[11]
         nodeDictEntry = {}
