@@ -27,34 +27,27 @@ def openFile(fileType):
     with open(filePath, 'rb') as fileFile:
         fileReader = csv.reader(fileFile)
         fileList = list(fileReader)
-    print "fileList type: ", type(fileList)
     print "fileList length = ", len(fileList)
     return fileList
 
 def nodeList2Dict(nodeList):
     #print "Read the column names from the first row of the nodeList"
     nodeFields = nodeList[0]
-    print type(nodeFields)
-    pause
     #print "Pop off first row (the headers)"
     nodeList.pop(0)
     #print "Now we have Headers (nodeFields) and node's data (nodeList) objects"
     # Create new list, nodeData.
-    nodeData = []
+    #nodeData = []
     nodeDictBind = {}
     for row in nodeList:
-        nodeData.append(row)
         nodeID = row[11]
-        print "nodeID = ", nodeID
         nodeDictEntry = {}
-        #print "Grab each additional row"
-        for nodeRow in nodeData:
-            #print "Zip together the field names and values to create Dictionary nodeDictEntry"
-            nodeDictEntry.update(dict(zip(nodeFields, nodeRow)))
-            #print nodeDictEntry.keys
-            nodeDictKeyed = {nodeID:nodeDictEntry}
-            nodeDictBind.update(nodeDictKeyed)
-            print "nodeDictBind length (in) = ", len(nodeDictBind)
+        #print "Zip together the field names and values to create Dictionary nodeDictEntry"
+        nodeDictEntry.update(dict(zip(nodeFields, row)))
+        #nodeDictKeyed = {nodeID:nodeDictEntry}
+        #nodeDictBind.update(nodeDictKeyed)
+        nodeDictBind.update({nodeID:nodeDictEntry})
+            #print "nodeDictBind length (in) = ", len(nodeDictBind)
         #nodeDict.update(nodeDictEntry)
     #print nodeDict
     return nodeDictBind
@@ -69,6 +62,7 @@ print "nodeList Length = ", len(nodeList)
 # convert nodeList rows to nodeDictEntry and build nodeDict
 nodeDict = nodeList2Dict(nodeList)
 print "nodeDict length (out) = ", len(nodeDict)
+#print nodeDict
 
 
 # add nodeDictEntry to nodeDict
