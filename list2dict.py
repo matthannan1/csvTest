@@ -47,7 +47,6 @@ with open(nodePath, 'rb') as nodeFile:
         for nodeRow in nodeData:
             print "Zip together the field names and values to create Dictionary nodeDictEntry"
             nodeDictEntry.update(dict(zip(nodeFields, nodeRow)))
-
             print "Build ICW list"
             icwList = []
             for edgeRow in edgeData:

@@ -2,8 +2,8 @@ import csv
 import sys
 import Tkinter
 import tkFileDialog
+import pprint
 import os
-
 
 edgeList = []
 nodeDict = {}
@@ -22,7 +22,6 @@ def openFile(fileType):
     filePath = tkFileDialog.askopenfilename(initialdir = initialDir,
                                         title = ("Select ", select, " file"),
                                         filetypes = (("csv files","*.csv"),("all files","*.*")))
-
     # I really think this could be its own def, but whatevs...it works
     with open(filePath, 'rb') as fileFile:
         fileReader = csv.reader(fileFile)
@@ -36,39 +35,61 @@ def nodeList2Dict(nodeList):
     #print "Pop off first row (the headers)"
     nodeList.pop(0)
     #print "Now we have Headers (nodeFields) and node's data (nodeList) objects"
-    # Create new list, nodeData.
-    #nodeData = []
+    # Fix ID column header
+    if nodeFields[11] == "ResultID2":
+        nodeFields[11] = nodeFields[11].replace("ResultID2", "ID")
+        print("Fixed ID Header")
+    else:
+        print("ID Header OK")
+    # Fix Label column header
+    if nodeFields[13] == "Name":
+        nodeFields[13] = nodeFields[13].replace("Name", "Label")
+        print("Fixed Label Header")
+    else:
+        print("Label Header OK")
     nodeDictBind = {}
     for row in nodeList:
         nodeID = row[11]
         nodeDictEntry = {}
         #print "Zip together the field names and values to create Dictionary nodeDictEntry"
         nodeDictEntry.update(dict(zip(nodeFields, row)))
-        #nodeDictKeyed = {nodeID:nodeDictEntry}
-        #nodeDictBind.update(nodeDictKeyed)
         nodeDictBind.update({nodeID:nodeDictEntry})
-            #print "nodeDictBind length (in) = ", len(nodeDictBind)
-        #nodeDict.update(nodeDictEntry)
-    #print nodeDict
     return nodeDictBind
 
+#def edgeList2Dict(edgeList):
+#    print "Build ICW list"
+#    for k, v in nodeDict.items():
+#	    #print(k,v)
+#        icwList = []
+ #       for row in edgeDict
+#        for edgeRow in edgeList:
+#            if edgeRow[5] == nodeRow[11]:
+ #               icwList.append(edgeRow[6])
+
+#    print "Add icwList to Dictionary nodeDictEntry"
+ #   nodeDictEntry.update({'ICW':icwList})
+ #   print nodeDictEntry
 
 # open node file
 userInput = raw_input("Open Match file or ICW file? m or i: ")
 # create nodeList
 nodeList = openFile(userInput)
 print "nodeList Length = ", len(nodeList)
-#print nodeList
 # convert nodeList rows to nodeDictEntry and build nodeDict
+# add nodeDictEntry to nodeDict
 nodeDict = nodeList2Dict(nodeList)
 print "nodeDict length (out) = ", len(nodeDict)
-#print nodeDict
+pprint.pprint(nodeDict)
 
-
-# add nodeDictEntry to nodeDict
 # open edge file and create edgeList
 #userInput = raw_input("Open Match file or ICW file? m or i: ")
-#openFile(userInput)
+# create edgeList
+#edgeList = openFile(userInput)
+#print "edgeList Length = ", len(edgeList)
+
+
+
+
 #icw2List(filePath)
 # copy Target entries to icwList
 # add icwList to correct nodeDictEntry within nodeDict
