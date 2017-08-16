@@ -7,7 +7,7 @@ import os
 ## create a root Tk widget (so we can destroy it later)
 root = Tkinter.Tk()
 
-def makeNodes():
+def makeNodes(anonymized):
     # Cleanup Family Finder Matches file and create nodes.csv
     # GUI file picker
     print("Select Family Finder Matches file...")
@@ -49,7 +49,10 @@ def makeNodes():
 
     # Figure out working directory
     workPath = os.path.dirname(filePath)
-    nodeFile = str(workPath + '/nodes.csv')
+    if anonymized == "y":
+        nodeFile = str(workPath + '/nodesAnonymized.csv')
+    else:
+        nodeFile = str(workPath + '/nodes.csv')    
     print("DEBUG- ",nodeFile)
     
     # If nodes.csv exists, delete it
@@ -60,16 +63,28 @@ def makeNodes():
         except:
             print("No previous nodes.csv file found.")
 
-    # Write the Header and nodes to file
-    with open(nodeFile, 'wb+') as outfile:
-        writenodes = csv.writer(outfile)
-        writenodes.writerow([nodeHeader[1], nodeHeader[2], nodeHeader[3], nodeHeader[4],
-                            nodeHeader[5], nodeHeader[6], nodeHeader[8], nodeHeader[9],
-                            nodeHeader[10], nodeHeader[11], nodeHeader[12],nodeHeader[13]])
-        for row in nodes:
-            writenodes.writerow([row[1], row[2], row[3], row[4],
-                            row[5], row[6], row[8], row[9],
-                            row[10], row[11], row[12],row[11]])
+    # Generate file based on Anonymized data or not
+    if anonymized == "y":
+        # Write the Header and nodes to file
+        with open(nodeFile, 'wb+') as outfile:
+            writenodes = csv.writer(outfile)
+            writenodes.writerow([nodeHeader[1], nodeHeader[2], nodeHeader[3], nodeHeader[4],
+                                nodeHeader[5], nodeHeader[6], nodeHeader[8], nodeHeader[9],
+                                nodeHeader[10], nodeHeader[11], nodeHeader[12],nodeHeader[13]])
+            for row in nodes:
+                writenodes.writerow([row[1], row[2], row[3], row[4],
+                                row[5], row[6], row[8], row[9],
+                                row[10], row[11], row[12],row[11]])
+    else:
+        with open(nodeFile, 'wb+') as outfile:
+            writenodes = csv.writer(outfile)
+            writenodes.writerow([nodeHeader[0], nodeHeader[1], nodeHeader[2], nodeHeader[3], nodeHeader[4],
+                                nodeHeader[5], nodeHeader[6], nodeHeader[7], nodeHeader[8], nodeHeader[9],
+                                nodeHeader[10], nodeHeader[11], nodeHeader[12],nodeHeader[13]])
+            for row in nodes:
+                writenodes.writerow([row[0], row[1], row[2], row[3], row[4],
+                                row[5], row[6], row[7], row[8], row[9],
+                                row[10], row[11], row[12],row[11]])
     print("Created nodes.csv file")
 
 def makeEdges():
@@ -134,7 +149,8 @@ def makeEdges():
 
 print("Let's clean some data!")
 print("We'll start with Family Finder Match data")
-makeNodes()
+userInput = raw_input("Make data anonymized? (y/n)  ")
+makeNodes(userInput)
 print("Great! Now let's prep the ICW data")
 makeEdges()
 print("OK. That should do it.")
