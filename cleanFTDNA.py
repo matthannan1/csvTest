@@ -21,31 +21,26 @@ def makeNodes(anonymized):
     # Open the file
     with open(filePath, 'rb') as infile:
         readnodes = csv.reader(infile)
-
-    # Pump file contents into nodes list
+        # Pump file contents into nodes list
         for row in readnodes:
             nodes.append(row)
-
-    # Read the column names from the first line of the file
+        # Read the column names from the first line of the file
         nodeHeader = nodes[0]
-
-    # Fix ID column header
+        # Fix ID column header
         if nodeHeader[11] == "ResultID2":
             nodeHeader[11] = nodeHeader[11].replace("ResultID2", "ID")
             print("Fixed ID Header")
         else:
             print("ID Header OK")
-
-    # Fix Label column header
+        # Fix Label column header
         if nodeHeader[13] == "Name":
             nodeHeader[13] = nodeHeader[13].replace("Name", "Label")
             print("Fixed Label Header")
         else:
             print("Label Header OK")
-
-    # Pop off first row (the headers)
+        # Pop off first row (the headers)
         nodes.pop(0)
-    # Now we have Headers and nodes objects
+        # Now we have Headers and nodes objects
 
     # Figure out working directory
     workPath = os.path.dirname(filePath)
