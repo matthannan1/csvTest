@@ -83,8 +83,8 @@ def makeNodes(anonymized):
                                 nodeHeader[10], nodeHeader[11], nodeHeader[12],nodeHeader[13]])
             for row in nodes:
                 writenodes.writerow([row[0], row[1], row[2], row[3], row[4],
-                                row[5], row[6], row[7], row[8], row[9],
-                                row[10], row[11], row[12],row[11]])
+                                    row[5], row[6], row[7], row[8], row[9],
+                                    row[10], row[11], row[12],row[13]])
     print("Created nodes.csv file")
 
 def makeEdges():
