@@ -7,6 +7,8 @@ import os
 
 edgeList = []
 nodeDict = {}
+edgeDict = {}
+
 
 def openFile(fileType):
     ## create a root Tk widget (so we can destroy it later)
@@ -60,13 +62,16 @@ def nodeList2Dict(nodeList):
 def edgeList2Dict(edgeList):
     print "Build ICW list"
     for k, v in nodeDict.items():
-	    #print(k,v)
-        details = mainDict[k]
+        entries = nodeDict[k]
         icwList = []
         for row in edgeDict:
-        for edgeRow in edgeList:
-            if edgeRow[5] == nodeRow[11]:
-                icwList.append(edgeRow[6])
+            for edgeRow in edgeList:
+                if edgeRow[5] == nodeRow[11]:
+            # example of syntax from dictTestNest.py
+            # print "Age:  ", details.get('age')
+            # This GETS the va ue for a key from a sub-dictionary
+            # I want to insert a new k:v in the sub-dictionary                
+                    icwList.append(edgeRow[6])
 
 #    print "Add icwList to Dictionary nodeDictEntry"
     nodeDictEntry.update({'ICW':icwList})
