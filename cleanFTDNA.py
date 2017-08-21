@@ -17,7 +17,6 @@ def makeNodes(anonymized):
 
     # Create empty nodes list
     nodes = []
-
     # Open the file
     with open(filePath, 'rb') as infile:
         readnodes = csv.reader(infile)
