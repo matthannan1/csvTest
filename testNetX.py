@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 edgeFile =  open('edges.csv', 'rb')
 G = nx.read_edgelist(edgeFile, delimiter = ',', create_using=nx.Graph(), nodetype=str)
-print type(G)
+#print type(G)
 print nx.info(G)
 #G.add_node(file)
 
