@@ -6,13 +6,16 @@ look interesting, as does https://automatetheboringstuff.com/chapter7/ , which i
 from __future__ import print_function
 from  Tkinter import *
 import Tkinter, Tkconstants, tkFileDialog
-
 import os
 
+# .withdraw() hides that second blank window
+root = Tk().withdraw()
+# This should be set to C:\Users\%USERNAME%\Downloads or whatever
+initDir = "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi"
+# These options in .askdirectory seem to get the job done!
+filedirectory = tkFileDialog.askdirectory(initialdir=initDir,title='Please select a directory')
+#print(filedirectory)
 
-root = Tk()
-filedirectory = tkFileDialog.askdirectory()
-print(filedirectory)
 for filename in os.listdir(filedirectory):
     count = 0
     if "Matches" in filename:

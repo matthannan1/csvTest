@@ -22,15 +22,37 @@ edgeFilename = tkFileDialog.askopenfilename(initialdir = initialDir,
                                         title = "Select ICW file",
                                         filetypes = (("csv files", "*.csv"), ("all files", "*.*")))
 
+chrFilename = tkFileDialog.askopenfilename(initialdir = initialDir,
+                                        title = "Select Chromosome file",
+                                        filetypes = (("csv files", "*.csv"), ("all files", "*.*")))                                        
+
 #print "Create empty lists"
 nodeData = []
 edgeData = []
+chrData = []
 nodeDict = {}
 
 #print "Open the files"
 with open(edgeFilename, 'rb') as edgeFile:
     edgeReader = csv.reader(edgeFile)
     edgeData = list(edgeReader)
+
+with open(chrFilename, 'rb') as chrFile:
+    chrReader = csv.reader(chrFile)
+    #print "Pump node file contents into nodes list"
+    chrData = list(chrReader)
+    #print "Read the column names from the first line of the file"
+    chrFields = chrData[0]
+    #print "Pop off first row (the headers)"
+    chrData.pop(0)
+    #print "Now we have Headers and nodes objects"
+
+    # This is what we are after: a list of lists of dictionaries. [[{chr:1},{start:7223},{end:23456}]]
+    for chrRow in chrData:
+        chrDictEntry = {}
+        nodeID = nodeRow[11]
+        # Zip together the field names and values to create Dictionary nodeDictEntry
+        nodeDictEntry.update(dict(zip(nodeFields, nodeRow)))    
 
 with open(nodeFilename, 'rb') as nodeFile:
     nodeReader = csv.reader(nodeFile)
