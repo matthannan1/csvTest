@@ -39,7 +39,6 @@ for filename in os.listdir(filedirectory):
         with open(filename, 'rb') as edgeFile:
             edgeReader = csv.reader(edgeFile)
             edgeData = list(edgeReader)
-    print(len(edgeData))        
 
     if "Matches" in filename:
         print(filename)
