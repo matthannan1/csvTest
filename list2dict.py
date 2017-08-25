@@ -48,11 +48,11 @@ with open(chrFilename, 'rb') as chrFile:
     #print "Now we have Headers and nodes objects"
 
     # This is what we are after: a list of lists of dictionaries. [[{chr:1},{start:7223},{end:23456}]]
-    for chrRow in chrData:
-        chrDictEntry = {}
-        nodeID = nodeRow[11]
-        # Zip together the field names and values to create Dictionary nodeDictEntry
-        nodeDictEntry.update(dict(zip(nodeFields, nodeRow)))    
+#    for chrRow in chrData:
+ #       chrDictEntry = {}
+ #       nodeID = nodeRow[11]
+ #       # Zip together the field names and values to create Dictionary nodeDictEntry
+  #      nodeDictEntry.update(dict(zip(nodeFields, nodeRow)))    
 
 with open(nodeFilename, 'rb') as nodeFile:
     nodeReader = csv.reader(nodeFile)
