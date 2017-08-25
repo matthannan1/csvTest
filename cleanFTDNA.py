@@ -14,7 +14,6 @@ def makeNodes(anonymized):
     # initialdir = "/",title = "Select file",filetypes = (("jpeg files","*.jpg"),("all files","*.*"))
     filePath = tkFileDialog.askopenfilename(initialdir = "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi",
                                             title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
-
     # Create empty nodes list
     nodes = []
     # Open the file
@@ -87,35 +86,28 @@ def makeEdges():
     print("Select ICW file...")
     filePath = tkFileDialog.askopenfilename(initialdir = "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi",
                                             title = "Select file",filetypes = (("csv files","*.csv"),("all files","*.*")))
-
     # Create empty edges list
     edges = []
-
     # Open the file
     with open(filePath, 'rb') as infile:
         readedges = csv.reader(infile)
-
     # Pump file contents into edges list
         for row in readedges:
             edges.append(row)
-
     # Read the column names from the first line of the file
         edgesHeader = edges[0]
-
     # Fix ID column header
         if edgesHeader[5] == "Profile KitID":
             edgesHeader[5] = edgesHeader[5].replace("Profile KitID", "Source")
             print("Fixed Source Header")
         else:
             print("Source Header OK")
-
     # Fix Label column header
         if edgesHeader[6] == "Match KitID":
             edgesHeader[6] = edgesHeader[6].replace("Match KitID", "Target")
             print("Fixed Target Header")
         else:
             print("Target Header OK")
-
     # Pop off first row (the headers)
         edges.pop(0)
     # Now we have Headers and nodes objects
@@ -123,7 +115,6 @@ def makeEdges():
     # Build edgeFile
     workPath = os.path.dirname(filePath)
     edgeFile = str(workPath + '/edges.csv')
-
     # If edges.csv exists, delete it
     if os.path.isfile(edgeFile):
         try:
@@ -131,7 +122,6 @@ def makeEdges():
             print("Removed previous edges.csv file.")
         except:
              print("No previous edges.csv file found.")
-
     # Write the Header and nodes to file
     with open(edgeFile, 'wb+') as outfile:
         writeedges = csv.writer(outfile)
