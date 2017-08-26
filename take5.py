@@ -3,54 +3,58 @@
 into a json format."""
 
 from __future__ import print_function
-from  Tkinter import *
+from tkinter import filedialog
+from tkinter import *
 import csv
-import Tkinter
-import Tkconstants
-import tkFileDialog
+#import tkinter
+#import Tkconstants
+#import tkFileDialog
 import os
 import json
+import locale
+import time
 
 # Create empty lists
 nodeData = []
 edgeData = []
-chrData  = []
+cbData  = []
 nodeDict = {}
 
 # Ask for the directory to get the files from
-# .withdraw() hides that second blank window
-root = Tk().withdraw()
+root = Tk().withdraw() # .withdraw() hides that second blank window
 # This should be set to C:\Users\%USERNAME%\Downloads or whatever
-initDir = "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi"
+initDir = r"C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi"
 # These options in .askdirectory seem to get the job done!
-filedirectory = tkFileDialog.askdirectory(initialdir=initDir, title='Please select a directory')
-#filedirectory = "C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi\Matt Hannan\20170817-FTDNA"
+filedirectory = filedialog.askdirectory(initialdir=initDir, title='Please select a directory')
 
 ###############################################################################
 
-# This forces the creation of the edgeData and chrData before
-# the start of node processing.
-#icwStr = str("ICW")
-#chrStr = str("Browser")
-#matchStr = str("Matches")
-##filename = str()
+# This forces the creation of the edgeData and chrData before the start of node processing.
 
 for filename in os.listdir(filedirectory):
-    if icwStr in filename:
-        with open(filename, 'rb') as edgeFile:
+    if "ICW" in filename:
+        with open(filename, 'r', encoding="UTF8") as edgeFile:
             edgeReader = csv.reader(edgeFile)
             edgeData = list(edgeReader)
 
-for filename in os.listdir(filedirectory):
-    if "Browser" in filename:
-        with open(filename, 'rb') as chrFile:
-            chrReader = csv.reader(chrFile)
-            chrData = list(chrReader)
+#     W   T   F   ?   !   ?   !   ?
+# This follows the exact same pattern as icw and matches, and yet this blows up.
+# Run it once with the comments in place, then run it again with the comments removed.
+# I'm not even doing anything with the data yet! I just want to open the file and 
+# read the contents into a list. Pretty basic stuff.
+#for filename in os.listdir(filedirectory):
+ #   print(filedirectory)
+ #   print(filename)
+  #  time.sleep(2)
+   # if "Browser" in filename:
+    #    with open(filename, 'r', encoding="UTF8") as cbFile:
+    #        cbReader = csv.reader(cbFile)
+     #       cbData = list(cbReader)
 
 # Start node processing
 for filename in os.listdir(filedirectory):
     if "Matches" in filename:
-        with open(filename, 'rb') as nodeFile:
+        with open(filename, 'r', encoding="UTF8") as nodeFile:
             nodeReader = csv.reader(nodeFile)
             # Pump node file contents into nodes list
             nodeData = list(nodeReader)
@@ -63,8 +67,7 @@ for filename in os.listdir(filedirectory):
             if nodeFields[13] == "Name":
                 nodeFields[13] = nodeFields[13].replace("Name", "Label")
             # Pop off first row (the headers)
-            nodeData.pop(0)
-            # Now we have Headers and nodes objects
+            nodeData.pop(0) # Now we have Headers and nodes objects
             # Set counter to 0
             count = 0
             # Start to cycle through nodes list
