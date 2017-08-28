@@ -2,55 +2,50 @@
 """This script takes in Match (node) and ICW (edge) files and smashes them
 into a json format."""
 
-from __future__ import print_function
+#from __future__ import print_function
 from tkinter import filedialog
 from tkinter import *
 import csv
-#import tkinter
-#import Tkconstants
-#import tkFileDialog
 import os
 import json
 import locale
 import time
+import pprint
 
 # Create empty lists
 nodeData = []
 edgeData = []
-cbData  = []
+cbData = []
 nodeDict = {}
 
 # Ask for the directory to get the files from
 root = Tk().withdraw() # .withdraw() hides that second blank window
 # This should be set to C:\Users\%USERNAME%\Downloads or whatever
-initDir = r"C:\Users\hannamj\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi"
+initDir = r"C:\Users\batspit\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi"
 # These options in .askdirectory seem to get the job done!
 filedirectory = filedialog.askdirectory(initialdir=initDir, title='Please select a directory')
 
 ###############################################################################
 
-# This forces the creation of the edgeData and chrData before the start of node processing.
-
+# This forces the creation of the edgeData and cbData before the start of node processing.
 for filename in os.listdir(filedirectory):
     if "ICW" in filename:
+        print("Looking at: ", filename)
         with open(filename, 'r', encoding="UTF8") as edgeFile:
             edgeReader = csv.reader(edgeFile)
             edgeData = list(edgeReader)
+        print("edgeData list created")
+        time.sleep(2)
 
-#     W   T   F   ?   !   ?   !   ?
-# This follows the exact same pattern as icw and matches, and yet this blows up.
-# Run it once with the comments in place, then run it again with the comments removed.
-# I'm not even doing anything with the data yet! I just want to open the file and 
-# read the contents into a list. Pretty basic stuff.
-#for filename in os.listdir(filedirectory):
- #   print(filedirectory)
- #   print(filename)
-  #  time.sleep(2)
-   # if "Browser" in filename:
-    #    with open(filename, 'r', encoding="UTF8") as cbFile:
-    #        cbReader = csv.reader(cbFile)
-     #       cbData = list(cbReader)
-
+for filename in os.listdir(filedirectory):
+    if "Browser" in filename:
+        print("Looking at: ", filename)
+        with open(filename, 'r', encoding="UTF8") as cbFile:
+            cbReader = csv.reader(cbFile)
+            cbData = list(cbReader)
+        print("cbData list created")
+        time.sleep(2)
+        
 # Start node processing
 for filename in os.listdir(filedirectory):
     if "Matches" in filename:
@@ -84,17 +79,26 @@ for filename in os.listdir(filedirectory):
                 for edgeRow in edgeData:
                     # If Source column value = the nodeID...
                     if edgeRow[5] == nodeID:
-                        #...add the Target column value to icwlist
+                        # ...add the Target column value to icwList
                         icwList.append(edgeRow[6])
                 # Add icwList to Dictionary nodeDictEntry
                 nodeDictEntry.update({'ICW':icwList})
+                # Build the Chromosome Browser mess
+                cbList = []
+                # Cycle through cbData, created above
+                for cbRow in cbData:
+                    if cbRow[7] == nodeID:
+                        cbList.append(cbRow[1], cbRow[2], cbRow[3], cbRow[4],
+                                      cbRow[5], cbRow[6], cbRow[7])
+                nodeDictEntry.update({'Chromosome Data':cbList})
                 # Add Dictionary nodeDictEntry to Dictionary nodeDict
-                nodeDict[nodeID] = (nodeDictEntry)
+                nodeDict[nodeID] = nodeDictEntry
                 os.system('cls')
                 print("Nodes processed: ", count)
                 count = count + 1
 
 print()
+pprint.pprint(cbData)
 print("nodeDict length: ", len(nodeDict))
 
 # Check if nodes.json file exists
@@ -106,4 +110,3 @@ if os.path.exists('nodes.json'):
 # Writing JSON data
 with open('nodes.json', 'w') as f:
     json.dump(nodeDict, f)
-
