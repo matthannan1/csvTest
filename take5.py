@@ -18,33 +18,38 @@ edgeData = []
 cbData = []
 nodeDict = {}
 
+###############################################################################
+
+def csv2list(searchstring):
+    # This forces the creation of the edgeData and cbData before the start of node processing.
+    for filename in os.listdir(filedirectory):
+        if searchstring in filename:
+            print("Looking at: ", filename)
+            with open(filename, 'r', encoding="UTF8") as ffile:
+                freader = csv.reader(ffile)
+                fdata = list(freader)
+            print("fData list created")
+            time.sleep(2)
+    return (fdata)
+
+
 # Ask for the directory to get the files from
 root = Tk().withdraw() # .withdraw() hides that second blank window
 # This should be set to C:\Users\%USERNAME%\Downloads or whatever
 initDir = r"C:\Users\batspit\Dropbox\Public\genealogy\$FamilyTree_GED\Gephi"
 # These options in .askdirectory seem to get the job done!
 filedirectory = filedialog.askdirectory(initialdir=initDir, title='Please select a directory')
+edgeData = csv2list('ICW')
+cdData = csv2list('Browser')
 
-###############################################################################
-
-# This forces the creation of the edgeData and cbData before the start of node processing.
-for filename in os.listdir(filedirectory):
-    if "ICW" in filename:
-        print("Looking at: ", filename)
-        with open(filename, 'r', encoding="UTF8") as edgeFile:
-            edgeReader = csv.reader(edgeFile)
-            edgeData = list(edgeReader)
-        print("edgeData list created")
-        time.sleep(2)
-
-for filename in os.listdir(filedirectory):
-    if "Browser" in filename:
-        print("Looking at: ", filename)
-        with open(filename, 'r', encoding="UTF8") as cbFile:
-            cbReader = csv.reader(cbFile)
-            cbData = list(cbReader)
-        print("cbData list created")
-        time.sleep(2)
+#    for filename in os.listdir(filedirectory):
+ #       if "Browser" in filename:
+ #           print("Looking at: ", filename)
+ #           with open(filename, 'r', encoding="UTF8") as cbFile:
+ #               cbReader = csv.reader(cbFile)
+ #               cbData = list(cbReader)
+ #           print("cbData list created")
+ #           time.sleep(2)
         
 # Start node processing
 for filename in os.listdir(filedirectory):
