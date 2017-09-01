@@ -34,7 +34,9 @@ def which_directory():
     return filedirectory
 
 def csv2list(search_string):
-    """This creates a basic list from a csv file and returns it."""
+    """(string) -> list
+    
+    This creates a basic list from a csv file and returns it."""
     for filename in os.listdir(file_directory):
         if search_string in filename:
             with open(os.path.join(file_directory, filename), 'r', encoding="UTF8") as ffile:
@@ -43,8 +45,10 @@ def csv2list(search_string):
             return fdata
 
 def make_nodeDict(node_Data):
-    """This function starts processing the match list and converts it into
-        a dictionary of dictionaries."""
+    """(list) -> dict
+
+    This function starts processing the match list and converts it into
+    a dictionary of dictionaries."""
     # Read the column names from the first line of the file
     nodeFields = node_Data[0]
     # Fix ID column header
@@ -77,9 +81,11 @@ def make_nodeDict(node_Data):
     return node_Dict
 
 def makeICW(edge_Data, node_ID):
-    """Simple function to extract ICW data and convert to a List.
-        This List is then added to the main nodeDict as a dictionary
-        entry, ala {ICW:icwList} """
+    """(list, string) -> smaller list
+    
+    Simple function to extract ICW data and convert to a List.
+    This List is then added to the main nodeDict as a dictionary
+    entry, ala {ICW:icwList} """
     icwList = []
     # Cycle through edgeData, created above from ICW file
     for edgeRow in edge_Data:
@@ -90,10 +96,12 @@ def makeICW(edge_Data, node_ID):
     return icwList
 
 def makeCB(cb_Data, node_ID):
-    """This function will get a little more complex than makeICW. Basically,
-        it will take the cbData and create a list of lists of dictionary entries.
-        This mess will then be appeneded to the main nodeDict as a dictionary entry,
-        ala {ChromosomeData:cbList} """
+    """(list, string) -> list of lists of dictionaries
+    
+    This function will get a little more complex than makeICW. Basically,
+    it will take the cbData and create a list of lists of dictionary entries.
+    This mess will then be appeneded to the main nodeDict as a dictionary entry,
+    ala {ChromosomeData:cbList} """
     # Build the Chromosome Browser mess
     cbList = []
     # Cycle through cbData, created above
