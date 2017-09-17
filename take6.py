@@ -12,6 +12,7 @@ import json
 #import locale
 #import time
 import pprint
+#import timeit
 
 # Create empty lists
 nodeData = []
@@ -59,6 +60,7 @@ def make_nodeDict(node_Data):
         nodeFields[13] = nodeFields[13].replace("Name", "Label")
     # Pop off first row (the headers)
     node_Data.pop(0) # Now we have Headers and nodes objects
+    
     # Set counter to 0
     count = 0
     node_Dict = {}
