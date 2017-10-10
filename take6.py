@@ -3,16 +3,11 @@
     files and smashes them all together into a json format, which is exported
     to nodes.json file."""
 
-#from __future__ import print_function
 from tkinter import filedialog, Tk
-#from tkinter import Tk
 import csv
 import os
 import json
-#import locale
-#import time
 import pprint
-#import timeit
 
 # Create empty lists
 nodeData = []
@@ -36,7 +31,7 @@ def which_directory():
 
 def csv2list(search_string):
     """(string) -> list
-    
+
     This creates a basic list from a csv file and returns it."""
     for filename in os.listdir(file_directory):
         if search_string in filename:
@@ -60,7 +55,6 @@ def make_nodeDict(node_Data):
         nodeFields[13] = nodeFields[13].replace("Name", "Label")
     # Pop off first row (the headers)
     node_Data.pop(0) # Now we have Headers and nodes objects
-    
     # Set counter to 0
     count = 0
     node_Dict = {}
@@ -84,7 +78,7 @@ def make_nodeDict(node_Data):
 
 def makeICW(edge_Data, node_ID):
     """(list, string) -> smaller list
-    
+
     Simple function to extract ICW data and convert to a List.
     This List is then added to the main nodeDict as a dictionary
     entry, ala {ICW:icwList} """
@@ -97,26 +91,45 @@ def makeICW(edge_Data, node_ID):
             icwList.append(edgeRow[6])
     return icwList
 
-def makeCB(cb_Data, node_ID):
+def makeCB(cb_Data, nodeID):
     """(list, string) -> list of lists of dictionaries
-    
+
     This function will get a little more complex than makeICW. Basically,
     it will take the cbData and create a list of lists of dictionary entries.
     This mess will then be appeneded to the main nodeDict as a dictionary entry,
     ala {ChromosomeData:cbList} """
-    # Build the Chromosome Browser mess
+    # create cbList
     cbList = []
-    # Cycle through cbData, created above
+    cb_List = []
+    # Cycle through cb_Data, paring it down to just the data (remove names)
     for cbRow in cb_Data:
-        if cbRow[7] == node_ID:
-            cbList.append(cbRow[1], cbRow[2], cbRow[3], cbRow[4],
-                          cbRow[5], cbRow[6], cbRow[7])
-        pprint.pprint(cbList)
-    return cbList
+        cbList.append([cbRow[2], cbRow[3], cbRow[4],
+                       cbRow[5], cbRow[6], cbRow[7]])
+    # Read the column names from the first line of the file
+    cbFields = cbList[0]
+    # Pop off first row (the headers)
+    cbList.pop(0) # Now we have Headers and cbs objects
+    print("cbList created")
+    cbDictEntry = {}
+    # Start to cycle through cbs list
+    for cbListRow in cbList:
+        cbDictEntry = {}
+        cbID = cbListRow[5]
+        cbListRow.pop(5)
+        # Make cbList and append to cbDictEntry
+        if cbID == nodeID:
+            # Zip together the field names and values to create Dictionary cbDictEntry
+            cbDictEntry.update(dict(zip(cbFields, cbListRow)))
+            cb_List.append(cbDictEntry)
+    return cb_List
+
+
+
+################################################################
 
 file_directory = which_directory()
 edgeData = csv2list('ICW')
-cdData = csv2list('Browser')
+cbData = csv2list('Browser')
 nodeData = csv2list('Matches')
 nodeDict = make_nodeDict(nodeData)
 
