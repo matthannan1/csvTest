@@ -39,7 +39,7 @@ def csv2list(search_string):
                 fdata = list(freader)
             return fdata
 
-def makeCB(cb_Data, nodeID):
+def makeCB(cb_Data, node_ID):
     # create cbList
     cbList = []
     cb_List = []
@@ -59,7 +59,7 @@ def makeCB(cb_Data, nodeID):
         cbID = cbListRow[5]
         cbListRow.pop(5)
         # Make cbList and append to cbDictEntry
-        if cbID == nodeID:
+        if cbID == node_ID:
             # Zip together the field names and values to create Dictionary cbDictEntry
             cbDictEntry.update(dict(zip(cbFields, cbListRow)))
             cb_List.append(cbDictEntry)

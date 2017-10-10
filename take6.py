@@ -3,11 +3,10 @@
     files and smashes them all together into a json format, which is exported
     to nodes.json file."""
 
-from tkinter import filedialog, Tk
 import csv
 import os
 import json
-import pprint
+from tkinter import filedialog, Tk
 
 # Create empty lists
 nodeData = []
@@ -19,7 +18,8 @@ nodeDict = {}
 
 def which_directory():
     """This function provides an easy GUI for the user to select the
-        working directory of the files."""
+        working directory of the files.
+    """
     # Ask for the directory to get the files from
     root = Tk().withdraw() # .withdraw() hides that second blank window
     # This sets to the users home directory
@@ -32,7 +32,8 @@ def which_directory():
 def csv2list(search_string):
     """(string) -> list
 
-    This creates a basic list from a csv file and returns it."""
+    This creates a basic list from a csv file and returns it.
+    """
     for filename in os.listdir(file_directory):
         if search_string in filename:
             with open(os.path.join(file_directory, filename), 'r', encoding="UTF8") as ffile:
@@ -44,7 +45,8 @@ def make_nodeDict(node_Data):
     """(list) -> dict
 
     This function starts processing the match list and converts it into
-    a dictionary of dictionaries."""
+    a dictionary of dictionaries.
+    """
     # Read the column names from the first line of the file
     nodeFields = node_Data[0]
     # Fix ID column header
@@ -81,7 +83,8 @@ def makeICW(edge_Data, node_ID):
 
     Simple function to extract ICW data and convert to a List.
     This List is then added to the main nodeDict as a dictionary
-    entry, ala {ICW:icwList} """
+    entry, ala {ICW:icwList}
+    """
     icwList = []
     # Cycle through edgeData, created above from ICW file
     for edgeRow in edge_Data:
@@ -97,7 +100,8 @@ def makeCB(cb_Data, nodeID):
     This function will get a little more complex than makeICW. Basically,
     it will take the cbData and create a list of lists of dictionary entries.
     This mess will then be appeneded to the main nodeDict as a dictionary entry,
-    ala {ChromosomeData:cbList} """
+    ala {ChromosomeData:cbList}
+    """
     # create cbList
     cbList = []
     cb_List = []
@@ -109,7 +113,6 @@ def makeCB(cb_Data, nodeID):
     cbFields = cbList[0]
     # Pop off first row (the headers)
     cbList.pop(0) # Now we have Headers and cbs objects
-    print("cbList created")
     cbDictEntry = {}
     # Start to cycle through cbs list
     for cbListRow in cbList:
