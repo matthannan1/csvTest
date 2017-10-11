@@ -89,7 +89,7 @@ def makeICW(edge_Data, node_ID):
 
     Simple function to extract ICW data and convert to a List.
     This List is then added to the main nodeDict as a dictionary
-    entry, ala {ICW:icwList}
+    entry, ala {ICW:icwList} 
     """
     icwList = []
     # Cycle through edgeData, created above from ICW file
@@ -100,7 +100,7 @@ def makeICW(edge_Data, node_ID):
             icwList.append(edgeRow[6])
     return icwList
 
-def makeCB(cb_Data, nodeID):
+def makeCB(cb_Data, nodeID):   
     """(list, string) -> list of lists of dictionaries
 
     This function will get a little more complex than makeICW. Basically,
