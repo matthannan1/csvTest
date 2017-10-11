@@ -19,7 +19,6 @@ def makeNodes(anonymized):
     for filename in os.listdir(file_directory):
         if 'Matches' in filename:
             with open(os.path.join(file_directory, filename), 'r', encoding="UTF8") as ffile:
-                print(ffile)
                 # Create empty nodes list
                 nodes = []
                 readnodes = csv.reader(ffile)

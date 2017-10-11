@@ -55,6 +55,10 @@ def make_nodeDict(node_Data):
     # Fix Label column header
     if nodeFields[13] == "Name":
         nodeFields[13] = nodeFields[13].replace("Name", "Label")
+    # Make copy of nodeFields without ID.
+    # This is in case we ever merge the cleanup script and this one.
+    nodeSubFields = nodeFields
+    del nodeSubFields[11]
     # Pop off first row (the headers)
     node_Data.pop(0) # Now we have Headers and nodes objects
     # Set counter to 0
@@ -64,10 +68,12 @@ def make_nodeDict(node_Data):
     for nodeRow in node_Data:
         nodeDictEntry = {}
         nodeID = nodeRow[11]
+        # Remove ID index
+        del nodeRow[11]
         # Break Ancestral string into Ancestral list
         nodeRow[8] = nodeRow[8].split('| ')
         # Zip together the field names and values to create Dictionary nodeDictEntry
-        nodeDictEntry.update(dict(zip(nodeFields, nodeRow)))
+        nodeDictEntry.update(dict(zip(nodeSubFields, nodeRow)))
         # Make icwList and append to nodeDictEntry
         nodeDictEntry.update({'ICW':makeICW(edgeData, nodeID)})
         # Make cbList and append to nodeDictEntry
@@ -126,7 +132,16 @@ def makeCB(cb_Data, nodeID):
             cb_List.append(cbDictEntry)
     return cb_List
 
-
+def dict2json(nodeDict):
+    # Check if nodes.json file exists
+    if os.path.exists(os.path.join(file_directory, 'nodes.json')):
+        # if it does, delete it
+        os.remove(os.path.join(file_directory, 'nodes.json'))
+        print("Deleted old nodes.json file.")
+    # Writing JSON data
+    with open(os.path.join(file_directory, 'nodes.json'), 'w') as f:
+        json.dump(nodeDict, f)
+        print("nodes.json file created.")
 
 ################################################################
 
@@ -137,16 +152,6 @@ nodeData = csv2list('Matches')
 nodeDict = make_nodeDict(nodeData)
 
 print()
-#pprint.pprint(node)
 print("nodeDict length: ", len(nodeDict))
 
-# Check if nodes.json file exists
-if os.path.exists(os.path.join(file_directory, 'nodes.json')):
-    # if it does, delete it
-    os.remove(os.path.join(file_directory, 'nodes.json'))
-    print("Deleted old nodes.json file.")
-
-# Writing JSON data
-with open(os.path.join(file_directory, 'nodes.json'), 'w') as f:
-    json.dump(nodeDict, f)
-    print("nodes.json file created.")
+dict2json(nodeDict)
