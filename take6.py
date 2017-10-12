@@ -89,7 +89,7 @@ def makeICW(edge_Data, node_ID):
 
     Simple function to extract ICW data and convert to a List.
     This List is then added to the main nodeDict as a dictionary
-    entry, ala {ICW:icwList} 
+    entry, ala {ICW:icwList}
     """
     icwList = []
     # Cycle through edgeData, created above from ICW file
@@ -100,7 +100,7 @@ def makeICW(edge_Data, node_ID):
             icwList.append(edgeRow[6])
     return icwList
 
-def makeCB(cb_Data, nodeID):   
+def makeCB(cb_Data, nodeID):
     """(list, string) -> list of lists of dictionaries
 
     This function will get a little more complex than makeICW. Basically,
@@ -119,11 +119,13 @@ def makeCB(cb_Data, nodeID):
     cbFields = cbList[0]
     # Pop off first row (the headers)
     cbList.pop(0) # Now we have Headers and cbs objects
-    cbDictEntry = {}
+    #cbDictEntry = {}
     # Start to cycle through cbs list
     for cbListRow in cbList:
         cbDictEntry = {}
+        # Grab the match Kit ID
         cbID = cbListRow[5]
+        # Remove last column, the match Kit ID
         cbListRow.pop(5)
         # Make cbList and append to cbDictEntry
         if cbID == nodeID:
@@ -132,7 +134,7 @@ def makeCB(cb_Data, nodeID):
             cb_List.append(cbDictEntry)
     return cb_List
 
-def dict2json(nodeDict):
+def dict2json(node_Dict):
     # Check if nodes.json file exists
     if os.path.exists(os.path.join(file_directory, 'nodes.json')):
         # if it does, delete it
@@ -140,7 +142,7 @@ def dict2json(nodeDict):
         print("Deleted old nodes.json file.")
     # Writing JSON data
     with open(os.path.join(file_directory, 'nodes.json'), 'w') as f:
-        json.dump(nodeDict, f)
+        json.dump(node_Dict, f)
         print("nodes.json file created.")
 
 ################################################################
